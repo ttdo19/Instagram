@@ -14,6 +14,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var posts = [PFObject] ()
     var refreshControl = UIRefreshControl()
+    var postLimit = 20
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +38,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     func fetchPost() {
         let query = PFQuery(className: "Posts")
         query.includeKey("author")
-        query.limit = 20
+        query.limit = postLimit
         
         query.findObjectsInBackground { (posts, error) in
             if posts != nil {
@@ -45,6 +46,25 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.tableView.reloadData()
                 self.refreshControl.endRefreshing()
             }
+        }
+    }
+    
+    func fetchMorePost() {
+        let query = PFQuery(className: "Posts")
+        query.includeKey("author")
+        query.limit = postLimit + 20
+        
+        query.findObjectsInBackground { (posts, error) in
+            if posts != nil {
+                self.posts = posts!
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if(indexPath.row + 1 == posts.count) {
+            fetchMorePost()
         }
     }
     
