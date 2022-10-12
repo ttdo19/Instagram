@@ -16,10 +16,27 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        usernameField.text = "Username"
+        passwordField.text = "Password"
+        
         // Do any additional setup after loading the view.
     }
     
-
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    
+    @IBAction func usernameChanged(_ sender: Any) {
+        usernameField.text = ""
+    }
+    
+    
+    @IBAction func passwordEdited(_ sender: Any) {
+        passwordField.text = ""
+        passwordField.isSecureTextEntry = true
+    }
+    
     @IBAction func onSignIn(_ sender: Any) {
         if usernameAndPasswordNotEmpty() {
             let username = usernameField.text!
