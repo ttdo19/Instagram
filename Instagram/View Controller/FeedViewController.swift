@@ -77,15 +77,15 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         let post = posts[indexPath.row]
         
         let user = post["author"] as! PFUser
-        cell.usernameLabel.text = user.username
-        
-        cell.captionLabel.text = post["name"] as! String
+        cell.topUsernameLabel.text = user.username
+        cell.bottomUsernameLabel.text = user.username
+        cell.commentLabel.text = post["name"] as! String
         
         let imageFile = post["image"] as! PFFileObject
         let urlString = imageFile.url!
         let url = URL(string: urlString)!
         
-        cell.photoView.af.setImage(withURL: url)
+        cell.postImage.af.setImage(withURL: url)
         return cell
     }
     /*

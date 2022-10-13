@@ -9,9 +9,11 @@ import UIKit
 
 class PostCell: UITableViewCell {
 
-    @IBOutlet weak var captionLabel: UILabel!
-    @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var photoView: UIImageView!
+
+    @IBOutlet weak var postImage: UIImageView!
+    @IBOutlet weak var topUsernameLabel: UILabel!
+    @IBOutlet weak var commentLabel: UILabel!
+    @IBOutlet weak var bottomUsernameLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
