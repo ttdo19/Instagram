@@ -38,6 +38,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     func fetchPost() {
         let query = PFQuery(className: "Posts")
         query.includeKey("author")
+        query.addDescendingOrder("createdAt")
         query.limit = postLimit
         
         query.findObjectsInBackground { (posts, error) in
@@ -52,6 +53,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     func fetchMorePost() {
         let query = PFQuery(className: "Posts")
         query.includeKey("author")
+        query.addDescendingOrder("createdAt")
         query.limit = postLimit + 20
         
         query.findObjectsInBackground { (posts, error) in
