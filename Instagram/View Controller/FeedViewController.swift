@@ -14,7 +14,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var posts = [PFObject] ()
     var refreshControl = UIRefreshControl()
-    var postLimit = 20
+    var postLimit = 4
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,8 +54,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         let query = PFQuery(className: "Posts")
         query.includeKey("author")
         query.addDescendingOrder("createdAt")
-        query.limit = postLimit + 20
-        
+        postLimit = postLimit + 4
+        query.limit = postLimit
         query.findObjectsInBackground { (posts, error) in
             if posts != nil {
                 self.posts = posts!
