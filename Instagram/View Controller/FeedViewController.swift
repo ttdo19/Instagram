@@ -35,6 +35,18 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         fetchPost()
     }
     
+    @IBAction func onLogoutButton(_ sender: Any) {
+        PFUser.logOut()
+        
+        let main = UIStoryboard(name: "Main", bundle: nil)
+        let loginViewController = main.instantiateViewController(withIdentifier: "LoginViewController")
+        
+        guard let windowScreen = UIApplication.shared.connectedScenes.first as? UIWindowScene, let delegate = windowScreen.delegate as? SceneDelegate else {return}
+        
+        delegate.window?.rootViewController = loginViewController
+        
+    }
+    
     func fetchPost() {
         let query = PFQuery(className: "Posts")
         query.includeKey("author")
