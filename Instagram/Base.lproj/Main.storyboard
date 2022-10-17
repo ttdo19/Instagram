@@ -347,7 +347,7 @@
         <!--Home-->
         <scene sceneID="krJ-HN-KuO">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Dkh-bv-P3u" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="FeedNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="Dkh-bv-P3u" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" image="feed_tab" id="YZh-jY-cxn"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="x3X-kE-Muc"/>
