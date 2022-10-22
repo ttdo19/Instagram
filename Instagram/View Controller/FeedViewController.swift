@@ -18,7 +18,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var posts = [PFObject] ()
     var refreshControl = UIRefreshControl()
-    var postLimit = 4
+    var postLimit = 5
     
     var selectedPost: PFObject!
     
@@ -120,7 +120,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         let query = PFQuery(className: "Posts")
         query.includeKeys(["author", "comments", "comments.author"])
         query.addDescendingOrder("createdAt")
-        postLimit = postLimit + 4
+        postLimit = postLimit + 5
         query.limit = postLimit
         query.findObjectsInBackground { (posts, error) in
             if posts != nil {
@@ -131,7 +131,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if(indexPath.row + 1 == posts.count) {
+        if(indexPath.section + 1 == posts.count) {
             fetchMorePost()
         }
     }
@@ -156,6 +156,11 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             
             let user = post["author"] as! PFUser
+            let profileImageFile = user["profileImage"] as? PFFileObject
+            let profileUrlString = profileImageFile?.url! ?? "https://img.icons8.com/material/96/000000/name--v1.png"
+            let profileUrl = URL(string: profileUrlString)
+            cell.profileImage.af.setImage(withURL: profileUrl!)
+            
             cell.topUsernameLabel.text = user.username
             cell.bottomUsernameLabel.text = user.username
             cell.commentLabel.text = post["name"] as! String
@@ -172,6 +177,10 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             let comment = comments[indexPath.row - 1]
             let user = comment["author"] as! PFUser
+            let profileImageFile = user["profileImage"] as? PFFileObject
+            let profileUrlString = profileImageFile?.url! ?? "https://img.icons8.com/material/96/000000/name--v1.png"
+            let profileUrl = URL(string: profileUrlString)
+            cell.profileImage.af.setImage(withURL: profileUrl!)
             cell.commentLabel.text = comment["text"] as? String
             cell.usernameLabel.text = user.username
             return cell

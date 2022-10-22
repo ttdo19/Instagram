@@ -16,8 +16,8 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        usernameField.text = "Username"
-        passwordField.text = "Password"
+        usernameField.placeholder = "Username"
+        passwordField.placeholder = "Password"
         initializeHideKeyboard()
         // Do any additional setup after loading the view.
     }

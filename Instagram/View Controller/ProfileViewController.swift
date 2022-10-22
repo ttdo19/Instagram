@@ -11,6 +11,7 @@ import AlamofireImage
 
 class ProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
+    @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var usernameLabel: UILabel!
     
@@ -22,7 +23,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         collectionView.delegate = self
         collectionView.dataSource = self
         self.fetchPost()
-        
+        getUserInfo()
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         
         layout.minimumInteritemSpacing = 1
@@ -31,13 +32,23 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         print("width: \(width)")
         layout.itemSize = CGSize(width: width, height: width)
         layout.minimumLineSpacing = 1
-        usernameLabel.text = PFUser.current()?.username
-        // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.fetchPost()
+        getUserInfo()
+    }
+    
+    func getUserInfo() {
+        let user = PFUser.current()
+        usernameLabel.text = user?.username
+        
+        let imageFile = user!["profileImage"] as? PFFileObject
+        let urlString = imageFile?.url! ?? "https://img.icons8.com/material/96/000000/name--v1.png"
+        let url = URL(string: urlString)
+        profileImage.af.setImage(withURL: url!)
+        
     }
     
     func fetchPost() {

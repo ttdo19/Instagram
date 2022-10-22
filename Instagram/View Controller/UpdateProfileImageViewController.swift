@@ -1,22 +1,21 @@
 //
-//  CameraViewController.swift
+//  UpdateProfileImageViewController.swift
 //  Instagram
 //
-//  Created by Trang Do on 10/9/22.
+//  Created by Trang Do on 10/22/22.
 //
 
 import UIKit
-import AlamofireImage
 import Parse
-import CameraManager
+import AlamofireImage
 
-class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class UpdateProfileImageViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+    @IBOutlet weak var profileImage: UIImageView!
     
-    @IBOutlet weak var comment: UITextField!
-    @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Do any additional setup after loading the view.
     }
     
@@ -26,37 +25,32 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         picker.delegate = self
         picker.allowsEditing = true
         
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+        if (UIImagePickerController.isSourceTypeAvailable(.photoLibrary)) {
             picker.sourceType = .photoLibrary
         } else {
             picker.sourceType = .camera
         }
-        
         present(picker, animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.editedImage] as! UIImage
-        
         let size = CGSize(width: 300, height: 300)
-        let scaledImage = image.af_imageAspectScaled(toFit: size)
         
-        imageView.image = scaledImage
+        let scaledImage = image.af.imageAspectScaled(toFit: size)
+        profileImage.image = scaledImage
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func onSubmit(_ sender: Any) {
-        let post = PFObject(className: "Posts")
+    @IBAction func onUpdateImage(_ sender: Any) {
+        let user = PFUser.current()
         
-        post["name"] = comment.text
-        post["author"] = PFUser.current()!
-        
-        let imageData = imageView.image!.pngData()!
+        let imageData = profileImage.image!.pngData()!
         let file = PFFileObject(name: "image.png", data: imageData)
         
-        post["image"] = file
+        user!["profileImage"] = file
         
-        post.saveInBackground { (success, error) in
+        user!.saveInBackground { (success, error) in
             if success {
                 self.dismiss(animated: true, completion: nil)
                 print("saved!")
